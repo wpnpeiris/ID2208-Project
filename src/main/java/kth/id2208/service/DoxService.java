@@ -12,9 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import kth.id2208.dao.Template;
 import kth.id2208.dao.TemplateDAO;
-import kth.id2208.data.DataTransformFactory;
-import kth.id2208.data.ITranformer;
-import kth.id2208.data.TransformerType;
+import kth.id2208.transform.DataTransformFactory;
+import kth.id2208.transform.XSLTranformer;
 
 /**
  * @author pradeeppeiris
@@ -38,11 +37,12 @@ public class DoxService implements IDoxService {
 		return templateDAO.listTemplates(TEMPLATE_BASE_PATH);
 	}
 	
-	public String generateDocument(String tempateId, String data) throws WebApplicationException {
+	public DocumentOutput generateDocument(String tempateId, String data) throws WebApplicationException {
 		log.info("Generate Document");
-		ITranformer transformer = DataTransformFactory.getTransformer(TransformerType.HTML);
 		try {
-			return transformer.transform(TEMPLATE_BASE_PATH + tempateId + ".xsl", data);
+			String templatePath = TEMPLATE_BASE_PATH + tempateId + ".xsl";
+			XSLTranformer transformer = DataTransformFactory.getTransformer(templatePath);
+			return transformer.transform(templatePath, data);
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		}

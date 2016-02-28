@@ -24,6 +24,7 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
 import kth.id2208.dao.Template;
+import kth.id2208.service.DocumentOutput;
 import kth.id2208.service.IDoxService;
 
 /**
@@ -71,12 +72,12 @@ public class DoxResource {
 	
 	@POST
 	@Timed
-	@ApiOperation(consumes="application/xml", value = "Generate document", notes = "API for generating document")
+	@ApiOperation(produces="application/json", consumes="application/xml", value = "Generate document", notes = "API for generating document")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success") })
 	@Path("/document")
 	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
-	public String generateDocument(@ApiParam(value = "Template Id", required = true) @QueryParam("id") String id,
+	@Produces(MediaType.APPLICATION_JSON)
+	public DocumentOutput generateDocument(@ApiParam(value = "Template Id", required = true) @QueryParam("id") String id,
 			@ApiParam(value = "Document Data", required = true) String data) {
 		log.info("Genrate document");
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package kth.id2208.data;
+package kth.id2208.transform;
 
 import java.io.File;
 import java.io.StringReader;
@@ -14,25 +14,15 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import kth.id2208.service.DocumentOutput;
+
 /**
  * @author pradeeppeiris
  *
  */
-public class HTMLTranformer implements ITranformer {
-	private static HTMLTranformer instance;
-	
-	private HTMLTranformer(){
-		
-	}
-	
-	public static HTMLTranformer getInstance() {
-		if(instance == null) {
-			instance = new HTMLTranformer();
-		}
-		return instance;
-	}
-	
-	public String transform(String template, String data) throws Exception {
+public abstract class XSLTranformer {
+
+	protected String xslTransform(String template, String data) throws Exception {
 		TransformerFactory factory = TransformerFactory.newInstance();
 		Source xslt = new StreamSource(new File(template));
 		Transformer transformer = factory.newTransformer(xslt);
@@ -43,4 +33,13 @@ public class HTMLTranformer implements ITranformer {
 		
 		return writer.toString();
 	}
+	
+	/**
+	 * 
+	 * @param template
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentOutput transform(String template, String data) throws Exception;
 }
