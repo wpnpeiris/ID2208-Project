@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -72,15 +73,28 @@ public class DoxResource {
 	
 	@POST
 	@Timed
-	@ApiOperation(produces="application/json", consumes="application/xml", value = "Generate document", notes = "API for generating document")
+	@ApiOperation(produces="application/json", consumes="application/xml", value = "Generate document for selected tempate", notes = "API for generating document for selected tempate")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success") })
+	@Path("/document/{templateid}")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
+	public DocumentOutput generateDocument(@ApiParam(value = "Template Id", required = true) @PathParam("templateid") String templateid,
+			@ApiParam(value = "Document Data", required = true) String data) {
+		log.info("Genrate document for selected template: " + templateid);
+
+		return doxService.generateDocument(templateid, data);
+	}
+	
+	@POST
+	@Timed
+	@ApiOperation(produces="application/json", consumes="application/xml", value = "Generate document for auto selected tempate", notes = "API for generating document for auto selected tempate")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success") })
 	@Path("/document")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_JSON)
-	public DocumentOutput generateDocument(@ApiParam(value = "Template Id", required = true) @QueryParam("id") String id,
-			@ApiParam(value = "Document Data", required = true) String data) {
-		log.info("Genrate document");
+	public DocumentOutput generateDocument(@ApiParam(value = "Document Data", required = true) String data) {
+		log.info("Genrate document for auto selected template");
 
-		return doxService.generateDocument(id, data);
+		return doxService.generateDocument(data);
 	}
 }

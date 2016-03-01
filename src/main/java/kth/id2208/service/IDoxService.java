@@ -34,4 +34,12 @@ public interface IDoxService {
 	 * @return
 	 */
 	public DocumentOutput generateDocument(String tempateId, String data) throws WebApplicationException ;
+	
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 * @throws WebApplicationException
+	 */
+	public DocumentOutput generateDocument(String data) throws WebApplicationException ;
 }
